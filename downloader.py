@@ -11,17 +11,16 @@ page = html.fromstring(page_string)
 #for link in page.xpath("//a"):
 #    print "Name", link.text, "URL", link.get("href")
 
-#print page_string
 
 iframe_link = page.cssselect("iframe")[0].attrib['src']
-print iframe_link
+print "found first stream at: " + str(iframe_link) + "..."
 
 first_player_page_string = urllib.urlopen(iframe_link).read()
 first_player_page = html.fromstring(first_player_page_string)
 
-print first_player_page_string
-print 1 + "a"
+#print first_player_page_string
 
-list_html = page.get_element_by_id("scrollbar1").find_class("overview")
-for link in list_html.xpath("//a"):
+
+list_html = first_player_page.get_element_by_id("scrollbar1").find_class("overview")
+for link in list_html[0].xpath("//a"):
     print "Name", link.text, "URL", link.get("href")
