@@ -1,10 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+# this is for file things
+import os, sys
 # this tool is for web requests
 import urllib
 # this tool is a parser for xml and html
 from lxml import html
+
+url = 'http://www.m2o.it/special/real-trust-reloaded/'
+url_reloaded = "http://www.m2o.it/reloaded/"
+relative_path_music = "./M2Os/"
 
 def get_page(url):
     page_string = urllib.urlopen(url).read()
@@ -53,13 +59,66 @@ def get_episode_list(url, url_reloaded):
 
     return episode_list
 
-url = 'http://www.m2o.it/special/real-trust-reloaded/'
-url_reloaded = "http://www.m2o.it/reloaded/"
+
+
+def get_file_list_in_path(relative_path):
+    # listing directories
+    listafile = os.listdir(os.getcwd() + "/" + str(relative_path))
+    return listafile
+
+def write_text_on_file(file, string_list):
+    outputFile = open("./lista.txt","w")
+    for file in listafile:
+        outputFile.write(file + "\n")
+    outputFile.close()
+
+def is_a_mp3_file(file):
+	if len(file) <= 1:
+		return False
+	if (file[-4:].lower() == ".mp3"):
+		return True
+	else:
+		return False
+
+def already_exists(filePath):
+	if (os.path.exists(filePath)):
+		return True
+	else:
+		return False
+
+def try_to_create_folder(path):
+	try:
+		os.mkdir(path)
+	except:
+		pass
+
+def download_file(url, filename):
+    loaded_file = urllib.urlopen(url)
+    with open(filename,'wb') as output:
+        output.write(loaded_file.read())
+    output.close()
+##
+##
+##
+##
+
+
 print "Mumble mumble... searching for Real Trust on " + url
 
 
 episode_list = get_episode_list(url, url_reloaded)
 # all we need is now in episode_list
 
-for episode in episode_list:
-    print str(episode)
+print "list ok. "
+
+try_to_create_folder(relative_path_music)
+
+present_file_list = get_file_list_in_path(relative_path_music)
+
+for track in episode_list:
+    file_name = track.name + ".mp3"
+    path_file = relative_path_music + file_name
+    if not already_exists(path_file):
+        print "Downloading " + track.name
+        download_file(track.link, path_file)
+print "all done, bye! Tunz Tunz Tunz..."
