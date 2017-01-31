@@ -12,15 +12,15 @@ dbname = get_settings().get_dbname()
 
 
 Base = declarative_base()
-
 class Show(Base):
+    
     __tablename__ = "Show"
 
 
     idShow = Column(Integer, primary_key=True)
     nameShow = Column(String)
     pageShow = Column(String)
-    folderShow = Column(String)
+    folderShow = Column(String, unique=True)
 
 class Reloaded(Base):
     __tablename__ = "Reloaded"
@@ -32,6 +32,7 @@ class Reloaded(Base):
     linkFile = Column(String)
     name = Column(String)
 
-# to build database, execute this file
-engine = create_engine('sqlite:///'+dbname)
-Base.metadata.create_all(engine)
+def init_db():
+    # to build database, execute this file
+    engine = create_engine('sqlite:///'+dbname)
+    Base.metadata.create_all(engine)

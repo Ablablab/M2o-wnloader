@@ -19,5 +19,4 @@ def build_player_page(m2o_reloaded_url, idAudio, idShow=""):
 def get_folderShow_from_link(url):
     overName = url[url.find("reloaded/")+len("reloaded/"):]
     folder = overName[:overName.find("/")]
-
     return folder

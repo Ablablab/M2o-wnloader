@@ -12,9 +12,10 @@ from lxml import html
 from Queue import Queue
 from threading import Thread
 from Settings.SettingsManager import get_settings
-from dao_m2o import add_show
-from reloaded import Show
+from dao_m2o import add_show, add_reloaded_track, find_all_shows, find_show_by_folderShow
+from reloaded import Show, Reloaded, init_db
 from utils import *
+import sqlalchemy
 
 settings = get_settings()
 
@@ -22,17 +23,36 @@ settings = get_settings()
 
 def thread_finder(index, max_thread, max_idaudio, pageurl, min_audio):
     i = index + min_audio
+    last_print = i
     while i <= max_idaudio:
-        pagestring, page = get_page(pageurl + str(i))
-        title = str(page.find(".//h3").text.encode('utf-8'))
+        if i-last_print > 5.0*max_idaudio/100 and index==1:
+            print str(i )+ "%"
+            last_print = i
 
-        if "Real Trust" in title:
-            print str(i) + "-- " + title
-        else:
-            print str(i)
+        try:
+            pagestring, page = get_page(pageurl + str(i))
 
+            title = str(page.find(".//h3").text.encode('utf-8'))
 
-        i += index + max_thread
+            music_link = page.cssselect("audio")[0].attrib['src']
+            folder = get_folderShow_from_link(music_link)
+            show = None
+            try:
+                show = find_show_by_folderShow(folder)[0]
+            except Exception as e:
+                #print "error in find by folder: " + folder
+                raise
+
+            try:
+                add_reloaded_track(Reloaded(idAudio=i, idShow=show.idShow, linkFile=music_link,name=title))
+            except sqlalchemy.exc.IntegrityError as e:
+                pass
+
+        except Exception as e:
+            #print e
+            pass
+
+        i += max_thread
 
 def get_all_href_of_a_in_container(page_url):
     rootpage_string, rootpage = get_page(page_url)
@@ -123,7 +143,6 @@ def get_all_tracks():
     #add_show(sh)
 
 
-    print "creating threads"
     threads = []
     for thread in range(max_thread):
         t = Thread(target=thread_finder, args=[thread, max_thread, max_idaudio, page, min_audio])
@@ -131,11 +150,15 @@ def get_all_tracks():
         t.start()
         threads.append(t)
 
-    print "waiting for threads' job"
+
     for thread in threads:
         thread.join()
-    print "done, bye"
+
+
 
 
 if __name__ == "__main__":
     add_all_shows()
+    print "shows loaded"
+    #get_all_tracks()
+    #init_db()

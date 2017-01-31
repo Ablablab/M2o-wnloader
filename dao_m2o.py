@@ -28,6 +28,13 @@ def add_show(show):
   ses.add(show)
   ses.commit()
 
+def find_show_by_folderShow(folder):
+    eng = create_engine('sqlite:///' + dbname)
+    Session = sessionmaker(bind=eng)
+    ses = Session()
+
+    return  ses.query(Show).filter(Show.folderShow.like(folder))
+
 def find_all_shows():
     eng = create_engine('sqlite:///' + dbname)
     Session = sessionmaker(bind=eng)

@@ -1,6 +1,6 @@
 dbname m2o.db
-threads 10
-min_idaudio 10000
+threads 50
+min_idaudio 10500
 max_idaudio 50000
 path_music ./M2Os/
 m2o_reloaded_url http://www.m2o.it/special/m2o_reloaded/
