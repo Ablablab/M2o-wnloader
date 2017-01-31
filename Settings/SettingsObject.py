@@ -28,6 +28,9 @@ class SettingsObject(object):
     def get_m2o_reloaded_url(self):
         return str(self.configDict["m2o_reloaded_url"][0])
 
+    def get_m2o_player_url(self):
+        return str(self.configDict["m2o_player_url"][0])
+
     def __str__(self):
         string = "Configuration:\n"
         for (key,value) in self.configDict.iteritems() :
