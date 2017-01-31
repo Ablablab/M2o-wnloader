@@ -11,7 +11,12 @@ from lxml import html
 # for threads
 from Queue import Queue
 from threading import Thread
+from Settings.SettingsManager import get_settings
 
+settings = get_settings()
+
+def thread_finder_shows(queue, pageurl_root):
+    root_url = settings.get_m2o_reloaded_url()
 
 def thread_finder(index, max_thread, max_idaudio, pageurl, min_audio):
     i = index + min_audio
@@ -27,19 +32,23 @@ def thread_finder(index, max_thread, max_idaudio, pageurl, min_audio):
 
         i += index + max_thread
 
-if __name__ == "__main__":
-    max_idaudio = 50000
-    max_thread = 100
-    min_audio = 10000
+def get_all_shows():
+    root_url = settings.get_m2o_reloaded_url()
+
+    rootpage_string, rootpage = get_page(root_url)
+
+
+
+def get_all_tracks():
+    max_idaudio = settings.get_max_idaudio()
+    max_thread = settings.get_threads_number()
+    min_audio = settings.get_min_idaudio()
     page = "http://www.m2o.it/reloaded/index.php?idaudio="
 
-    from reloaded import Shows
-
-    sh = Shows(idShow = 1, nameShow = "yuppie")
-    from dao_m2o import add_show
-    add_show(sh)
-
-    print "1" + 1
+    #from reloaded import Shows
+    #sh = Shows(idShow = 1, nameShow = "yuppie")
+    #from dao_m2o import add_show
+    #add_show(sh)
 
 
     print "creating threads"
@@ -54,3 +63,6 @@ if __name__ == "__main__":
     for thread in threads:
         thread.join()
     print "done, bye"
+
+if __name__ == "__main__":
+    get_all_shows()
