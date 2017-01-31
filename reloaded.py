@@ -13,8 +13,8 @@ dbname = get_settings().get_dbname()
 
 Base = declarative_base()
 
-class Shows(Base):
-    __tablename__ = "Shows"
+class Show(Base):
+    __tablename__ = "Show"
 
 
     idShow = Column(Integer, primary_key=True)
@@ -28,9 +28,10 @@ class Reloaded(Base):
     idAudio = Column(Integer, primary_key=True)
     date = Column(String)
     idSerie = Column(Integer)
-    idShow = Column(Integer, ForeignKey("Shows.idShow"))
+    idShow = Column(Integer, ForeignKey("Show.idShow"))
     linkFile = Column(String)
     name = Column(String)
 
+# to build database, execute this file
 engine = create_engine('sqlite:///'+dbname)
 Base.metadata.create_all(engine)

@@ -12,6 +12,8 @@ from lxml import html
 from Queue import Queue
 from threading import Thread
 from Settings.SettingsManager import get_settings
+from dao_m2o import add_show
+from reloaded import Show
 
 settings = get_settings()
 
@@ -69,7 +71,16 @@ def get_all_shows():
         shows_of_category=get_shows_from_category_page(category_url)
         shows_list.extend(shows_of_category)
 
-    get_info_on_show(shows_list[0])
+    # add to db, unsafe
+    import sqlalchemy
+    for show_url in shows_list:
+        try:
+            add_show(get_info_on_show(show_url))
+        except sqlalchemy.exc.IntegrityError:
+            #usually there's already on db
+            pass
+        except Exception as e:
+            print "not possible: " + show_url
     return shows_list
 
 def get_info_on_show(url):
@@ -85,9 +96,14 @@ def get_info_on_show(url):
     # published links, not all
     # alist = get_all_href_of_a_in_scrollbar(show_page_php)
 
-
     # remove :
     nameShow = showpage.cssselect("strong")[0].text[:-1].encode('utf-8')
+    if nameShow[0] == " ":
+        nameShow = nameShow[1:]
+
+    show = Show(nameShow=nameShow, idShow=idShow, pageShow=url)
+
+    return show
 
 
 

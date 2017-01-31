@@ -5,7 +5,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import sessionmaker
-from reloaded import Reloaded, Shows
+from reloaded import Reloaded, Show
 from Settings.SettingsManager import get_settings
 
 dbname = get_settings().get_dbname()
