@@ -22,7 +22,7 @@ def thread_finder(index, max_thread, max_idaudio, pageurl, min_audio):
     i = index + min_audio
     while i <= max_idaudio:
         pagestring, page = get_page(pageurl + str(i))
-        title = str(page.find(".//h3").text)
+        title = str(page.find(".//h3").text.encode('utf-8'))
 
         if "Real Trust" in title:
             print str(i) + "-- " + title
@@ -32,10 +32,63 @@ def thread_finder(index, max_thread, max_idaudio, pageurl, min_audio):
 
         i += index + max_thread
 
-def get_all_shows():
-    root_url = settings.get_m2o_reloaded_url()
+def get_all_href_of_a_in_container(page_url):
+    rootpage_string, rootpage = get_page(page_url)
 
-    rootpage_string, rootpage = get_page(root_url)
+    a_list_categories= rootpage.get_element_by_id("container").cssselect("a")
+    url_category_list =[]
+
+    for a in a_list_categories:
+        real_link = a.get("href").encode('utf-8')
+        url_category_list.append(real_link)
+    return url_category_list
+
+def get_all_href_of_a_in_scrollbar(page_url):
+    rootpage_string, rootpage = get_page(page_url)
+
+    a_list_categories= rootpage.get_element_by_id("scrollbar1").cssselect("a")
+    url_category_list =[]
+
+    for a in a_list_categories:
+        real_link = a.get("href").encode('utf-8')
+        url_category_list.append(real_link)
+    return url_category_list
+
+def get_categories_url_list():
+    root_url = settings.get_m2o_reloaded_url()
+    return get_all_href_of_a_in_container(root_url)
+
+def get_shows_from_category_page(url):
+    return get_all_href_of_a_in_container(url)
+
+def get_all_shows():
+    shows_list = []
+    url_category_list = get_categories_url_list()
+
+    for category_url in url_category_list:
+        shows_of_category=get_shows_from_category_page(category_url)
+        shows_list.extend(shows_of_category)
+
+    get_info_on_show(shows_list[0])
+    return shows_list
+
+def get_info_on_show(url):
+    showpage_string, showpage = get_page(url)
+
+    show_page_php = showpage.get_element_by_id("container").cssselect("iframe")[0].attrib['src'].encode('utf-8')
+
+    # isolate id
+    idShow = int(show_page_php[show_page_php.find("id=")+3:])
+    print idShow
+
+    name = showpage.get_element_by_id("container").cssselect("iframe")[0]
+    print show_page_php
+    alist = get_all_href_of_a_in_scrollbar(show_page_php)
+    for a in alist:
+        print a
+
+
+
 
 
 

@@ -41,7 +41,7 @@ def get_episode_list(url, url_reloaded):
     #    print "Name", link.text, "URL", link.get("href")
 
     # last track player link is inside an iframe (i don't like at all... but they use iframe)
-    iframe_link = page.cssselect("iframe")[0].attrib['src']
+    iframe_link = page.get_element_by_id("container").cssselect("iframe")[0].attrib['src']
     print "found first stream at: " + str(iframe_link) + "..."
 
     # open last track player page, it's just a page where i have a player and the list

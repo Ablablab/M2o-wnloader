@@ -19,6 +19,7 @@ class Shows(Base):
 
     idShow = Column(Integer, primary_key=True)
     nameShow = Column(String)
+    pageShow = Column(String)
 
 class Reloaded(Base):
     __tablename__ = "Reloaded"
