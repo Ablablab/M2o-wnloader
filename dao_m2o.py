@@ -6,11 +6,12 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import sessionmaker
 from reloaded import Reloaded, Shows
+from Settings.SettingsManager import get_settings
 
-dbname = "m2o.db"
+dbname = get_settings().get_dbname()
 
 def add_reloaded_track(track):
-  eng = create_engine('sqlite:///+"dbname"+')
+  eng = create_engine('sqlite:///' + dbname)
 
   Session = sessionmaker(bind=eng)
   ses = Session()
@@ -19,7 +20,7 @@ def add_reloaded_track(track):
   ses.commit()
 
 def add_show(show):
-  eng = create_engine('sqlite:///+"dbname"+')
+  eng = create_engine('sqlite:///' + dbname)
 
   Session = sessionmaker(bind=eng)
   ses = Session()
