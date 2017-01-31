@@ -1,6 +1,9 @@
 # downloaded files
 M2Os/*
 
+# db
+m2o.db
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
