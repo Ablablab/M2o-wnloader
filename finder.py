@@ -33,6 +33,15 @@ if __name__ == "__main__":
     min_audio = 10000
     page = "http://www.m2o.it/reloaded/index.php?idaudio="
 
+    from reloaded import Shows
+
+    sh = Shows(idShow = 1, nameShow = "yuppie")
+    from dao_m2o import add_show
+    add_show(sh)
+
+    print "1" + 1
+
+
     print "creating threads"
     threads = []
     for thread in range(max_thread):
