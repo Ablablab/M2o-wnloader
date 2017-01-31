@@ -20,6 +20,7 @@ class Show(Base):
     idShow = Column(Integer, primary_key=True)
     nameShow = Column(String)
     pageShow = Column(String)
+    folderShow = Column(String)
 
 class Reloaded(Base):
     __tablename__ = "Reloaded"
@@ -27,7 +28,6 @@ class Reloaded(Base):
 
     idAudio = Column(Integer, primary_key=True)
     date = Column(String)
-    idSerie = Column(Integer)
     idShow = Column(Integer, ForeignKey("Show.idShow"))
     linkFile = Column(String)
     name = Column(String)

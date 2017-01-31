@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from downloader import *
 
+from downloader import get_page
 # this is for file things
 import os, sys
 # this tool is for web requests
@@ -14,11 +14,11 @@ from threading import Thread
 from Settings.SettingsManager import get_settings
 from dao_m2o import add_show
 from reloaded import Show
+from utils import *
 
 settings = get_settings()
 
-def thread_finder_shows(queue, pageurl_root):
-    root_url = settings.get_m2o_reloaded_url()
+
 
 def thread_finder(index, max_thread, max_idaudio, pageurl, min_audio):
     i = index + min_audio
@@ -63,7 +63,7 @@ def get_categories_url_list():
 def get_shows_from_category_page(url):
     return get_all_href_of_a_in_container(url)
 
-def get_all_shows():
+def add_all_shows():
     shows_list = []
     url_category_list = get_categories_url_list()
 
@@ -89,7 +89,7 @@ def get_info_on_show(url):
     show_page_php = showpage.get_element_by_id("container").cssselect("iframe")[0].attrib['src'].encode('utf-8')
 
     # isolate id
-    idShow = int(show_page_php[show_page_php.find("id=")+3:])
+    idShow = get_idShow_from_url(show_page_php)
 
     name = showpage.get_element_by_id("container").cssselect("iframe")[0]
 
@@ -101,13 +101,14 @@ def get_info_on_show(url):
     if nameShow[0] == " ":
         nameShow = nameShow[1:]
 
-    show = Show(nameShow=nameShow, idShow=idShow, pageShow=url)
+    page_player_string, page_player = get_page(show_page_php)
+
+    iframe_link = page_player.get_element_by_id("player2").attrib['src'].encode('utf-8')
+    folderShow = get_folderShow_from_link(iframe_link)
+
+    show = Show(nameShow=nameShow, idShow=idShow, pageShow=url, folderShow=folderShow)
 
     return show
-
-
-
-
 
 
 def get_all_tracks():
@@ -135,5 +136,6 @@ def get_all_tracks():
         thread.join()
     print "done, bye"
 
+
 if __name__ == "__main__":
-    get_all_shows()
+    add_all_shows()
