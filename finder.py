@@ -79,13 +79,15 @@ def get_info_on_show(url):
 
     # isolate id
     idShow = int(show_page_php[show_page_php.find("id=")+3:])
-    print idShow
 
     name = showpage.get_element_by_id("container").cssselect("iframe")[0]
-    print show_page_php
-    alist = get_all_href_of_a_in_scrollbar(show_page_php)
-    for a in alist:
-        print a
+
+    # published links, not all
+    # alist = get_all_href_of_a_in_scrollbar(show_page_php)
+
+
+    # remove :
+    nameShow = showpage.cssselect("strong")[0].text[:-1].encode('utf-8')
 
 
 
