@@ -91,34 +91,34 @@ def thread_downloader(queue):
 ##
 ##
 
-
-print "Mumble mumble... searching for Real Trust on " + url
-
-
-episode_list = get_episode_list(url, url_reloaded)
-# all we need is now in episode_list
+if __name__ == "__main__":
+    print "Mumble mumble... searching for Real Trust on " + url
 
 
+    episode_list = get_episode_list(url, url_reloaded)
+    # all we need is now in episode_list
 
-try_to_create_folder(relative_path_music)
 
-present_file_list = get_file_list_in_path(relative_path_music)
 
-queue = Queue()
+    try_to_create_folder(relative_path_music)
 
-for track in episode_list:
-    file_name = track.name + ".mp3"
-    path_file = relative_path_music + file_name
-    if not already_exists(path_file):
-        queue.put((track.link, path_file))
+    present_file_list = get_file_list_in_path(relative_path_music)
 
-for _ in range(thread_number):
-    t = Thread(target=thread_downloader, args=[queue])
-    t.daemon = True
-    t.start()
-try:
-    queue.join()
-except (KeyboardInterrupt, SystemExit):
-    cleanup_stop_thread();
-    sys.exit()
-print "All done, bye! Tunz Tunz Tunz..."
+    queue = Queue()
+
+    for track in episode_list:
+        file_name = track.name + ".mp3"
+        path_file = relative_path_music + file_name
+        if not already_exists(path_file):
+            queue.put((track.link, path_file))
+
+    for _ in range(thread_number):
+        t = Thread(target=thread_downloader, args=[queue])
+        t.daemon = True
+        t.start()
+    try:
+        queue.join()
+    except (KeyboardInterrupt, SystemExit):
+        cleanup_stop_thread();
+        sys.exit()
+    print "All done, bye! Tunz Tunz Tunz..."
