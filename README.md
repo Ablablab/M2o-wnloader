@@ -6,31 +6,31 @@ This script is simply a python program that surfs on php site and find every m2o
 This can be easily extended to all programs on M2O reloaded. 
 
 ## Need (Ubuntu)
-python (sudo apt install python-minimal)
-pip (sudo apt install python-pip)
-lxml (pip install lxml)
-sqlalchemy (pip install sqlalchemy)
-sqlite3 (apt install sqlite3)
+* python (sudo apt install python-minimal)
+* pip (sudo apt install python-pip)
+* lxml (pip install lxml)
+* sqlalchemy (pip install sqlalchemy)
+* sqlite3 (apt install sqlite3)
 
 ## Installation
 no installation required
 
 ## Usage
-initialize and load library with:
+* initialize and load library with:
 python control.py -init -load_info_shows -load_info_tracks
 
-watch current settings (saved in settings.txt) with
+* watch current settings (saved in settings.txt) with
 python control.py -settings
 
-read local library (you have to initialize it before, watch above)
+* read local library (you have to initialize it before, watch above)
 python control.py -list shows
-watch all episodes of a series (example series with id 55)
+* watch all episodes of a series (example series with id 55)
 python control.py -show 55
 
-download an episode 
+* download an episode 
 python control.py -download_track 15002
 
-download all the show episodes
+* download all the show episodes
 python control.py -download_show 55
 
 ## Updating
