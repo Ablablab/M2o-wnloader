@@ -1,9 +1,8 @@
 # M2ownloader
 I really like Real Trust by DJ Molinaro... but M2O site doesn't allow directly to download traces....
 
-This script is simply a python program that surfs on php site and find every m2o real trust mp3. 
+This script is simply a python program that surfs on php site and find every m2o mp3s. 
 
-This can be easily extended to all programs on M2O reloaded. 
 
 ## Need (Ubuntu)
 * python (sudo apt install python-minimal)
