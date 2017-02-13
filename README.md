@@ -11,6 +11,9 @@ This script is simply a python program that surfs on php site and find every m2o
 * sqlalchemy (pip install sqlalchemy)
 * sqlite3 (apt install sqlite3)
 * cssselect (pip install cssselect)
+### Need for postgresql
+* libpq (sudo apt install libpq-dev)
+* psycopg (sudo pip install psycog2)
 
 ## Installation
 no installation required
