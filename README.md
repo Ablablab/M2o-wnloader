@@ -11,6 +11,7 @@ This can be easily extended to all programs on M2O reloaded.
 * lxml (pip install lxml)
 * sqlalchemy (pip install sqlalchemy)
 * sqlite3 (apt install sqlite3)
+* cssselect (pip install cssselect)
 
 ## Installation
 no installation required
