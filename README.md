@@ -5,7 +5,9 @@ This script is simply a python program that surfs on php site and find every m2o
 
 This can be easily extended to all programs on M2O reloaded. 
 
-## Need
+## Need (Ubuntu)
+python (sudo apt install python-minimal)
+pip (sudo apt install python-pip)
 lxml (pip install lxml)
 sqlalchemy (pip install sqlalchemy)
 sqlite3 (apt install sqlite3)
