@@ -11,13 +11,13 @@ from lxml import html
 # for threads
 from Queue import Queue
 from threading import Thread
-from Settings.SettingsManager import get_settings
+from PySettings.SettingsManager import SettingsManager
 from dao_m2o import add_show, add_reloaded_track, find_all_shows, find_show_by_folderShow
 from reloaded import Show, Reloaded, init_db
 from utils import *
 import sqlalchemy
 
-settings = get_settings()
+
 
 
 
@@ -26,7 +26,7 @@ def thread_finder(index, max_thread, max_idaudio, pageurl, min_audio):
     last_print = i
     while i <= max_idaudio:
         if i-last_print > 5.0*max_idaudio/100 and index==1:
-            print str(i )+ "%"
+            print str(i*1.0/max_idaudio )+ "%"
             last_print = i
 
         try:
@@ -77,6 +77,7 @@ def get_all_href_of_a_in_scrollbar(page_url):
     return url_category_list
 
 def get_categories_url_list():
+    settings = SettingsManager.getSettings()
     root_url = settings.get_m2o_reloaded_url()
     return get_all_href_of_a_in_container(root_url)
 
@@ -101,6 +102,7 @@ def add_all_shows():
             pass
         except Exception as e:
             print "not possible: " + show_url
+            print e
     return shows_list
 
 def get_info_on_show(url):
@@ -132,6 +134,7 @@ def get_info_on_show(url):
 
 
 def get_all_tracks():
+    settings = SettingsManager.getSettings()
     max_idaudio = settings.get_max_idaudio()
     max_thread = settings.get_threads_number()
     min_audio = settings.get_min_idaudio()

@@ -1,19 +1,17 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
+    #!/usr/bin/python
+    # -*- coding: utf-8 -*-
 
 from sqlalchemy import create_engine, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import sessionmaker, relationship
-from Settings.SettingsManager import get_settings
+from PySettings import SettingsManager
 
-
-dbname = get_settings().get_dbname()
 
 
 Base = declarative_base()
 class Show(Base):
-    
+
     __tablename__ = "Show"
 
 
@@ -32,7 +30,20 @@ class Reloaded(Base):
     linkFile = Column(String)
     name = Column(String)
 
-def init_db():
+def get_engine():
+    settings = SettingsManager.SettingsManager.getSettings()
+    db_name = settings.get_dbname()
+    db_engine = settings.get_db_engine()
+    db_user = settings.get_db_user()
+    db_password = settings.get_db_password()
+    db_ip = settings.get_db_ip()
     # to build database, execute this file
-    engine = create_engine('sqlite:///'+dbname)
+
+    #Not secure!!! warning injection!
+    engine = create_engine(db_engine+'://'+db_user+':'+db_password+'@'+db_ip+'/'+db_name)
+
+    return engine;
+
+def init_db():
+    engine = get_engine()
     Base.metadata.create_all(engine)

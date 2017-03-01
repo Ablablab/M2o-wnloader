@@ -1,7 +1,11 @@
-dbname m2o.db
+db_name m2o
 threads 50
 min_idaudio 10500
 max_idaudio 50000
 path_music ./M2Os/
 m2o_reloaded_url http://www.m2o.it/special/m2o_reloaded/
 m2o_player_url http://www.m2o.it/reloaded/index.php
+db_engine postgresql+psycopg2
+db_user m2o-writer
+db_password password
+db_ip 35.157.73.92:5432

@@ -6,13 +6,27 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import sessionmaker
 from reloaded import Reloaded, Show
-from Settings.SettingsManager import get_settings
+from PySettings.SettingsManager import SettingsManager
 
-dbname = get_settings().get_dbname()
+
+def get_engine():
+    settings = SettingsManager.getSettings()
+    db_name = settings.get_dbname()
+    db_engine = settings.get_db_engine()
+    db_user = settings.get_db_user()
+    db_password = settings.get_db_password()
+    db_ip = settings.get_db_ip()
+    # to build database, execute this file
+
+    #Not secure!!! warning injection!
+    engine = create_engine(db_engine+'://'+db_user+':'+db_password+'@'+db_ip+'/'+db_name)
+
+    return engine;
+
 
 def add_reloaded_track(track):
-  eng = create_engine('sqlite:///' + dbname)
-
+  dbname = SettingsManager.getSettings().get_dbname()
+  eng = get_engine()
   Session = sessionmaker(bind=eng)
   ses = Session()
 
@@ -20,7 +34,8 @@ def add_reloaded_track(track):
   ses.commit()
 
 def add_show(show):
-  eng = create_engine('sqlite:///' + dbname)
+  dbname = SettingsManager.getSettings().get_dbname()
+  eng = get_engine()
 
   Session = sessionmaker(bind=eng)
   ses = Session()
@@ -29,14 +44,16 @@ def add_show(show):
   ses.commit()
 
 def find_show_by_folderShow(folder):
-    eng = create_engine('sqlite:///' + dbname)
+    dbname = SettingsManager.getSettings().get_dbname()
+    eng = get_engine()
     Session = sessionmaker(bind=eng)
     ses = Session()
 
     return  ses.query(Show).filter(Show.folderShow.like(folder))
 
 def find_all_shows():
-    eng = create_engine('sqlite:///' + dbname)
+    dbname = SettingsManager.getSettings().get_dbname()
+    eng =get_engine()
     Session = sessionmaker(bind=eng)
     ses = Session()
 
